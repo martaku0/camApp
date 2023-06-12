@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 180px;
+    height: 280px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.img {
+    padding: 10px;
+    max-height: 150px;
+    max-width: 150px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
