@@ -20,7 +20,8 @@ app.get("/getData", function(req, res) {
 
     const list = async() => {
         try {
-            const data = await fsPromises.readdir("../web-app/public/images")
+            const data = await fsPromises.readdir("../../server/upload")
+            console.log(data)
             res.send(data)
         } catch (error) {
             res.send(error)
@@ -37,14 +38,14 @@ app.patch("/renameFile", function(req, res) {
             let isExisting = true
             while (isExisting) {
                 try {
-                    await fsPromises.access(`../web-app/public/images/${newName}.jpg`);
+                    await fsPromises.access(`../../server/upload/${newName}.jpg`);
                     newName += "-copy"
                 } catch (error) {
                     isExisting = false
                 }
             }
 
-            await fsPromises.rename(`../web-app/public/images/${req.body.name}`, `../web-app/public/images/${newName}.jpg`)
+            await fsPromises.rename(`../../server/upload/${req.body.name}`, `../../server/upload/${newName}.jpg`)
             console.log("renamed")
 
         } catch (error) {
@@ -59,7 +60,7 @@ app.patch("/renameFile", function(req, res) {
 app.patch("/deleteFile", function(req, res) {
     const deleteF = async() => {
         try {
-            await fsPromises.unlink(`../web-app/public/images/${req.body.name}`)
+            await fsPromises.unlink(`../../server/upload/${req.body.name}`)
             console.log("deleted")
 
         } catch (error) {
@@ -74,7 +75,7 @@ app.patch("/deleteMulti", function(req, res) {
     const list = req.body.list
     const deleteF = async(n) => {
         try {
-            await fsPromises.unlink(`../web-app/public/images/${n}`)
+            await fsPromises.unlink(`../../server/upload/${n}`)
             console.log("deleted")
 
         } catch (error) {
@@ -85,6 +86,14 @@ app.patch("/deleteMulti", function(req, res) {
         deleteF(e)
     });
     res.send("delete")
+})
+
+app.get("/filename/:name", function(req, res) {
+    let name = req.params.name
+    console.log(name.substring(1))
+    const filePath = path.resolve(__dirname, `../../server/upload/${name.substring(1)}`);
+    console.log(filePath)
+    res.sendFile(filePath)
 })
 
 /* --- */
